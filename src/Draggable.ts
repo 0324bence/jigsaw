@@ -9,7 +9,8 @@ class Draggable {
         public points: Coord[],
         private image: HTMLImageElement,
         private ctx: CanvasRenderingContext2D,
-        private base: Coord
+        private base: Coord,
+        private size: Coord
     ) {
         this.originalPoints = [...points];
     }
@@ -39,6 +40,7 @@ class Draggable {
         };
     }
     Draw(ctx: CanvasRenderingContext2D) {
+        const size = this.BoundingBox();
         ctx.save();
         ctx.beginPath();
         ctx.moveTo(this.points[0][0] + this.base[0], this.points[0][1] + this.base[1]);
@@ -65,12 +67,12 @@ class Draggable {
             this.image,
             imagePos[0],
             imagePos[1],
-            100,
-            100,
+            size.width,
+            size.height,
             this.base[0] + this.points[0][0],
             this.base[1] + this.points[0][1],
-            100,
-            100
+            size.width,
+            size.height
         );
         ctx.restore();
     }
@@ -134,7 +136,7 @@ class DraggableFactory {
         this.ctx.restore();
     }
     public AddDraggable(points: Coord[]) {
-        this.draggables.push(new Draggable(points, this.image, this.ctx, this.base));
+        this.draggables.push(new Draggable(points, this.image, this.ctx, this.base, this.size));
     }
 }
 
